@@ -284,6 +284,8 @@ static int ipv6_nd_start(struct ap_session *ses)
 	int val;
 	struct ipv6_nd_handler_t *h;
 
+	net->enter_ns();
+
 	sock = net->socket(AF_INET6, SOCK_RAW, IPPROTO_ICMPV6);
 
 	if (sock < 0) {
@@ -357,6 +359,7 @@ static int ipv6_nd_start(struct ap_session *ses)
 	triton_timer_add(ses->ctrl->ctx, &h->timer, 0);
 	send_ra_timer(&h->timer);
 
+	net->exit_ns();
 	return 0;
 
 out_err:

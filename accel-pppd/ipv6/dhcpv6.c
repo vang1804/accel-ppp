@@ -69,6 +69,8 @@ static void ev_ses_started(struct ap_session *ses)
 	int sock;
 	int f = 1;
 
+	net->enter_ns();
+
 	if (!ses->ipv6 || list_empty(&ses->ipv6->addr_list))
 		return;
 
@@ -126,6 +128,9 @@ static void ev_ses_started(struct ap_session *ses)
 	pd->hnd.read = dhcpv6_read;
 	triton_md_register_handler(ses->ctrl->ctx, &pd->hnd);
 	triton_md_enable_handler(&pd->hnd, MD_MODE_READ);
+
+
+	net->exit_ns();
 }
 
 static struct dhcpv6_pd *find_pd(struct ap_session *ses)
